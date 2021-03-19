@@ -35,7 +35,7 @@ const Windows = (props: WindowsProps) => {
         w: w.size.w,
         h: w.size.h
       }
-      zIndexes[w.key] = 100 + Math.random()*200
+      zIndexes[w.key] = 100 + Math.round(Math.random()*200)
       locations[w.key] = {
         x: w.location.x,
         y: w.location.y
