@@ -4,26 +4,6 @@ import { useTranslation } from "react-i18next";
 import { ResizableBox, ResizeCallbackData } from "react-resizable";
 import clsx from "clsx";
 
-const iWindowSizes = localStorage.getItem("windowSizes")
-  ? JSON.parse(localStorage.getItem("windowSizes") as string)
-  : {};
-
-const iWindowZIndexes = localStorage.getItem("windowZIndexes")
-  ? JSON.parse(localStorage.getItem("windowZIndexes") as string)
-  : {};
-
-const iWindowLocations = localStorage.getItem("windowLocations")
-  ? JSON.parse(localStorage.getItem("windowLocations") as string)
-  : {};
-
-const iWindowMaximizes = localStorage.getItem("windowMaximizes")
-  ? JSON.parse(localStorage.getItem("windowMaximizes") as string)
-  : {};
-
-const iWindowMinimizes = localStorage.getItem("windowMinimizes")
-  ? JSON.parse(localStorage.getItem("windowMinimizes") as string)
-  : {};
-
 export interface Window {
   key: string;
   title?: string;
@@ -44,6 +24,53 @@ interface WindowsProps {
 
 const Windows = (props: WindowsProps) => {
   const { windows, taskbar, grid } = props;
+  const getDefaultValues = () => {
+    let sizes: any = {}
+    let zIndexes: any = {}
+    let locations: any = {}
+    let maximized: any = {}
+    let minimized: any = {}
+    for(const w of windows) {
+      sizes[w.key] = {
+        w: w.size.w,
+        h: w.size.h
+      }
+      zIndexes[w.key] = 100 + Math.random()*200
+      locations[w.key] = {
+        x: w.location.x,
+        y: w.location.y
+      }
+      maximized[w.key] = false
+      minimized[w.key] = false
+    }
+    return {
+      sizes,
+      zIndexes,
+      locations,
+      maximized,
+      minimized
+    }
+  }
+  const defaults = getDefaultValues()
+  const iWindowSizes = localStorage.getItem("windowSizes")
+  ? JSON.parse(localStorage.getItem("windowSizes") as string)
+  : defaults.sizes;
+
+const iWindowZIndexes = localStorage.getItem("windowZIndexes")
+  ? JSON.parse(localStorage.getItem("windowZIndexes") as string)
+  : defaults.zIndexes;
+
+const iWindowLocations = localStorage.getItem("windowLocations")
+  ? JSON.parse(localStorage.getItem("windowLocations") as string)
+  : defaults.locations;
+
+const iWindowMaximizes = localStorage.getItem("windowMaximizes")
+  ? JSON.parse(localStorage.getItem("windowMaximizes") as string)
+  : defaults.maximized;
+
+const iWindowMinimizes = localStorage.getItem("windowMinimizes")
+  ? JSON.parse(localStorage.getItem("windowMinimizes") as string)
+  : defaults.minimized;
 
   const { t } = useTranslation();
 
